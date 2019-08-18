@@ -5,7 +5,13 @@ module.exports = {
     client: "sqlite3",
     useNullAsDefault: true, // needed for sqlite
     connection: {
-      filename: "./data/PROJECTS.db3"
+      filename: "./data/ProjectsDB.db3",
+      typeCast: function(field, next) {
+        if (field.length === 1) {
+          return field.string() == "1"; // 1 = true, 0 = false
+        }
+        return next();
+      }
     },
     migrations: {
       directory: "./data/migrations"
@@ -13,6 +19,7 @@ module.exports = {
     seeds: {
       directory: "./data/seeds"
     },
+
     // add the following
     pool: {
       afterCreate: (conn, done) => {
