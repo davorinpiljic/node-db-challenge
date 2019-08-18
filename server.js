@@ -90,11 +90,12 @@ server.get("/tasks/:id", async (req, res) => {
         "tasks.notes",
         "tasks.completed_tasks"
       );
-
     if (tasks) {
       taskValues = Object.values(tasks);
-      console.log(taskValues);
-      res.status(200).json(tasks);
+      taskValues.map(task => {
+        task["completed_tasks"] = Boolean(id.completed_tasks);
+      });
+      res.status(200).json(taskValues);
     } else {
       res.status(404).json({ message: "no tasks" });
     }
